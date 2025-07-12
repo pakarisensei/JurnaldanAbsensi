@@ -1018,7 +1018,7 @@ Berikan respons dalam format JSON yang valid dengan struktur {"materi": "...", "
                         responseMimeType: "application/json",
                     }
                  };
-                 const apiKey = "AIzaSyCwDaHuDQ0uRqOhuLuG5-zxjKZlCyd-buU" // <-- Dapatkan API Key dari Google AI Studio jika ingin deploy di luar Canvas
+                 const apiKey = "AIzaSyCwDaHuDQ0uRqOhuLuG5-zxjKZlCyd-buU";
                  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                  const response = await fetch(apiUrl, {
                      method: 'POST',
@@ -1027,7 +1027,8 @@ Berikan respons dalam format JSON yang valid dengan struktur {"materi": "...", "
                  });
 
                 if (!response.ok) {
-                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                    const errorBody = await response.text();
+                    throw new Error(`API Error: ${response.status} ${response.statusText}. Body: ${errorBody}`);
                 }
 
                  const result = await response.json();
@@ -1048,7 +1049,7 @@ Berikan respons dalam format JSON yang valid dengan struktur {"materi": "...", "
 
             } catch (error) {
                 console.error("Error calling Gemini API:", error);
-                showNotification(`❌ Gagal membuat rencana pembelajaran dengan AI.\n\nAlasan: ${error.message}\n\nSilakan coba lagi atau isi materi secara manual.`);
+                showNotification(`❌ Gagal membuat rencana pembelajaran dengan AI.\n\nAlasan: ${error.message}\n\nPastikan Kunci API Anda valid dan coba lagi.`);
             } finally {
                 btnText.classList.remove('hidden');
                 loader.classList.add('hidden');
